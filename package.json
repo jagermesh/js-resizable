@@ -45,5 +45,5 @@
     "lint": "eslint src",
     "test": "npm run lint"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
