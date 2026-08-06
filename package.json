@@ -44,5 +44,5 @@
     "update": "npm update && npm audit fix && webpack --config webpack.config.mjs",
     "lint": "eslint src"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
