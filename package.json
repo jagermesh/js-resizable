@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Jager Mesh"
+  },
+  "bugs": {
+    "url": "https://github.com/jagermesh/js-resizable/issues"
+  },
+  "deprecated": false,
+  "description": "Simple, lightweight pure JavaScript resizable component",
+  "homepage": "https://github.com/jagermesh/js-resizable#readme",
+  "keywords": [
+    "resizable",
+    "resize"
+  ],
+  "license": "MIT",
+  "main": "dist/resizable.min.js",
+  "module": "src/resizable.js",
+  "unpkg": "dist/resizable.min.js",
+  "jsdelivr": "dist/resizable.min.js",
+  "name": "js-resizable",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jagermesh/js-resizable.git"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.0",
+    "globals": "^17.9.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "scripts": {
+    "build": "npm install && npm audit fix && webpack --config webpack.config.mjs",
+    "update": "npm update && npm audit fix && webpack --config webpack.config.mjs",
+    "lint": "eslint src"
+  },
+  "version": "1.0.0"
+}

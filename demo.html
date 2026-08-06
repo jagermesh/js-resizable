@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>js-resizable demo</title>
+  <script src="dist/resizable.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .demo-area {
+      position: relative;
+      height: 420px;
+      background: repeating-linear-gradient(45deg, #f4f4f4, #f4f4f4 10px, #fafafa 10px, #fafafa 20px);
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    .box {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      width: 260px;
+      height: 160px;
+      background-color: #0dcaf0;
+      color: #063440;
+      border-radius: 6px;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, .2);
+      padding: 12px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .box-custom-handle {
+      background-color: #198754;
+      color: #fff;
+    }
+    .my-handle {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 18px;
+      height: 18px;
+      background-color: rgba(0, 0, 0, 0.35);
+      border-top-left-radius: 4px;
+      cursor: se-resize;
+    }
+    .status {
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>js-resizable demo</h1>
+  <p>Open this file directly in a browser (no build step needed). Drag the edges/corners of the
+  boxes below to resize them.</p>
+
+  <div class="demo-area">
+    <div class="box" id="box-default">
+      Default handles: n / s / e / w / se.<br>
+      Min 120&times;80, max 500&times;350.
+    </div>
+    <div class="box box-custom-handle" id="box-custom" style="top: 40px; left: 340px;">
+      Custom handle element (bottom-right square), no generated handles.
+    </div>
+  </div>
+
+  <div class="status" id="status">Resize a box to see live size/position here.</div>
+
+  <script>
+    // window.Resizable is created by the plain <script> tag above, no bundler needed.
+    const statusEl = document.getElementById('status');
+
+    const defaultBoxResizable = new window.Resizable(document.getElementById('box-default'), {
+      minWidth: 120,
+      minHeight: 80,
+      maxWidth: 500,
+      maxHeight: 350,
+      onResize: (size) => {
+        statusEl.textContent = `box-default: ${Math.round(size.width)}x${Math.round(size.height)} ` +
+          `at (${Math.round(size.left)}, ${Math.round(size.top)})`;
+      },
+      onResizeEnd: (size) => {
+        statusEl.textContent = `box-default: done at ${Math.round(size.width)}x${Math.round(size.height)}`;
+      },
+    });
+
+    const customBox = document.getElementById('box-custom');
+    customBox.insertAdjacentHTML('beforeend', '<div class="my-handle" data-resizable-direction="se"></div>');
+
+    const customBoxResizable = new window.Resizable(customBox, {
+      handleSelector: '.my-handle',
+      minWidth: 140,
+      minHeight: 90,
+    });
+
+    // Both instances expose destroy() to remove any generated handles and stop listening.
+    window.demoResizables = { defaultBoxResizable, customBoxResizable };
+  </script>
+</body>
+</html>
