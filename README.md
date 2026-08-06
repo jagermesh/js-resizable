@@ -4,8 +4,7 @@ Simple, lightweight pure JavaScript component that adds resize handles to any el
 
 ## Demo
 
-Open `demo.html` from this repo directly in your browser (no build step needed) to try resizing
-a box from any edge/corner, with min/max size limits and live callbacks.
+Open `demo.html` from this repo directly in your browser (no build step required) to see it in action.
 
 ## Installation
 
@@ -104,8 +103,15 @@ Available options:
 
 See `demo.html` for a runnable example of all the options above.
 
-That's all.
+If you also want to drag the same element around, you can pair this with
+[`@jagermesh/js-draggable`](https://cdn.jsdelivr.net/npm/@jagermesh/js-draggable/dist/draggable.min.js):
 
-Have fun. Send PR if you find any glitches or want to make improvements.
-
-:)
+~~~html
+<script src="https://cdn.jsdelivr.net/npm/@jagermesh/js-resizable/dist/resizable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jagermesh/js-draggable/dist/draggable.min.js"></script>
+<script>
+  const box = document.querySelector('.box');
+  new window.Draggable(box, { handler: '.title-bar' });
+  new window.Resizable(box);
+</script>
+~~~
