@@ -17,7 +17,16 @@
   "module": "src/resizable.js",
   "unpkg": "dist/resizable.min.js",
   "jsdelivr": "dist/resizable.min.js",
-  "name": "js-resizable",
+  "name": "@jagermesh/js-resizable",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/jagermesh/js-resizable.git"

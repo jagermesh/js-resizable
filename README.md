@@ -12,11 +12,11 @@ a box from any edge/corner, with min/max size limits and live callbacks.
 ### As an npm module
 
 ~~~
-npm install js-resizable
+npm install @jagermesh/js-resizable
 ~~~
 
 ~~~js
-import Resizable from 'js-resizable';
+import Resizable from '@jagermesh/js-resizable';
 
 const resizable = new Resizable(document.querySelector('.box'));
 ~~~
@@ -24,7 +24,7 @@ const resizable = new Resizable(document.querySelector('.box'));
 ### As a plain `<script>` tag
 
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/js-resizable/dist/resizable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jagermesh/js-resizable/dist/resizable.min.js"></script>
 <script>
   const resizable = new window.Resizable(document.querySelector('.box'));
 </script>
