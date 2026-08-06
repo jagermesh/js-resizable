@@ -66,7 +66,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const COMPONENT_CLASS = 'resizable';
+const COMPONENT_CLASS = 'jm-resizable';
 const STYLE_CLASS = `${COMPONENT_CLASS}-styles`;
 const HANDLE_DIRECTION_ATTR = 'data-resizable-direction';
 

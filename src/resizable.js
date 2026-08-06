@@ -1,4 +1,4 @@
-const COMPONENT_CLASS = 'resizable';
+const COMPONENT_CLASS = 'jm-resizable';
 const STYLE_CLASS = `${COMPONENT_CLASS}-styles`;
 const HANDLE_DIRECTION_ATTR = 'data-resizable-direction';
 
