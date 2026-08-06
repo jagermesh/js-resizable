@@ -85,58 +85,50 @@ const STYLE_CSS = `
   .${COMPONENT_CLASS}-handle {
     position: absolute;
     z-index: 1;
+    touch-action: none;
   }
-  .${COMPONENT_CLASS}-handle:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-  }
-  .${COMPONENT_CLASS}-handle-n {
-    top: -4px;
-    left: 0;
-    right: 0;
-    height: 8px;
-  }
+  .${COMPONENT_CLASS}-handle-n,
   .${COMPONENT_CLASS}-handle-s {
-    bottom: -4px;
     left: 0;
     right: 0;
-    height: 8px;
+    height: 7px;
   }
-  .${COMPONENT_CLASS}-handle-e {
-    top: 0;
-    right: -4px;
-    bottom: 0;
-    width: 8px;
-  }
+  .${COMPONENT_CLASS}-handle-e,
   .${COMPONENT_CLASS}-handle-w {
     top: 0;
-    left: -4px;
     bottom: 0;
-    width: 8px;
+    width: 7px;
   }
-  .${COMPONENT_CLASS}-handle-ne {
-    top: -4px;
-    right: -4px;
-    width: 12px;
-    height: 12px;
-  }
-  .${COMPONENT_CLASS}-handle-nw {
-    top: -4px;
-    left: -4px;
-    width: 12px;
-    height: 12px;
-  }
-  .${COMPONENT_CLASS}-handle-se {
-    bottom: -4px;
-    right: -4px;
-    width: 12px;
-    height: 12px;
-  }
+  .${COMPONENT_CLASS}-handle-n { top: 0; }
+  .${COMPONENT_CLASS}-handle-s { bottom: 0; }
+  .${COMPONENT_CLASS}-handle-e { right: 0; }
+  .${COMPONENT_CLASS}-handle-w { left: 0; }
+  .${COMPONENT_CLASS}-handle-ne,
+  .${COMPONENT_CLASS}-handle-nw,
+  .${COMPONENT_CLASS}-handle-se,
   .${COMPONENT_CLASS}-handle-sw {
-    bottom: -4px;
-    left: -4px;
-    width: 12px;
-    height: 12px;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
   }
+  .${COMPONENT_CLASS}-handle-ne { top: 0; right: 0; }
+  .${COMPONENT_CLASS}-handle-nw { top: 0; left: 0; }
+  .${COMPONENT_CLASS}-handle-se { bottom: 0; right: 0; }
+  .${COMPONENT_CLASS}-handle-sw { bottom: 0; left: 0; }
+  .${COMPONENT_CLASS}-handle-se::before,
+  .${COMPONENT_CLASS}-handle-sw::before,
+  .${COMPONENT_CLASS}-handle-ne::before,
+  .${COMPONENT_CLASS}-handle-nw::before {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    opacity: 0.6;
+  }
+  .${COMPONENT_CLASS}-handle-se::before { right: 4px; bottom: 4px; border-right: 2px solid currentcolor; border-bottom: 2px solid currentcolor; }
+  .${COMPONENT_CLASS}-handle-sw::before { left: 4px; bottom: 4px; border-left: 2px solid currentcolor; border-bottom: 2px solid currentcolor; }
+  .${COMPONENT_CLASS}-handle-ne::before { right: 4px; top: 4px; border-right: 2px solid currentcolor; border-top: 2px solid currentcolor; }
+  .${COMPONENT_CLASS}-handle-nw::before { left: 4px; top: 4px; border-left: 2px solid currentcolor; border-top: 2px solid currentcolor; }
   .${COMPONENT_CLASS}-is-resizing {
     -webkit-user-select: none;
     -moz-user-select: none;
