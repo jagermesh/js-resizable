@@ -137,6 +137,37 @@ const STYLE_CSS = `
 `;
 
 class Resizable {
+  static #byElement = new WeakMap();
+
+  static #instances = new Set();
+
+  static #observer = null;
+
+  #wasConnected = false;
+
+  #destroyed = false;
+
+  static #watch(instance) {
+    instance.#wasConnected = instance.#ctrl.isConnected;
+    Resizable.#instances.add(instance);
+    if (!Resizable.#observer) {
+      Resizable.#observer = new MutationObserver((records) => {
+        for (const item of Resizable.#instances) {
+          if (item.#ctrl.isConnected) {
+            item.#wasConnected = true;
+          } else if (item.#wasConnected || records.some((record) =>
+            Array.from(record.removedNodes).some((node) => node.contains(item.#ctrl)))) {
+            item.destroy();
+          }
+        }
+      });
+      Resizable.#observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  }
+
   #ctrl;
 
   #options;
@@ -150,6 +181,10 @@ class Resizable {
   #previousBodyCursor = null;
 
   constructor(ctrl, options) {
+    const existing = Resizable.#byElement.get(ctrl);
+    if (existing) {
+      return existing;
+    }
     let stylesContainer = document.head.querySelectorAll(`style.${STYLE_CLASS}`);
 
     if (stylesContainer.length === 0) {
@@ -178,20 +213,41 @@ class Resizable {
     this.#handles = this.#prepareHandles();
 
     for (const handle of this.#handles) {
-      handle.el.addEventListener('mousedown', (event) => this.#startResize(event, handle.direction));
-      handle.el.addEventListener('touchstart', (event) => this.#startResize(event, handle.direction), {
+      handle.onStart = (event) => this.#startResize(event, handle.direction);
+      handle.el.addEventListener('mousedown', handle.onStart);
+      handle.el.addEventListener('touchstart', handle.onStart, {
         passive: false,
       });
+    }
+    if (this.#handles.length) {
+      Resizable.#byElement.set(ctrl, this);
+      Resizable.#watch(this);
     }
   }
 
   destroy() {
-    this.#stopResize();
+    if (this.#destroyed) {
+      return;
+    }
+    this.#destroyed = true;
+    if (Resizable.#byElement.get(this.#ctrl) === this) {
+      Resizable.#byElement.delete(this.#ctrl);
+    }
+    Resizable.#instances.delete(this);
+    if (!Resizable.#instances.size && Resizable.#observer) {
+      Resizable.#observer.disconnect();
+      Resizable.#observer = null;
+    }
+    for (const handle of this.#handles) {
+      handle.el.removeEventListener('mousedown', handle.onStart);
+      handle.el.removeEventListener('touchstart', handle.onStart);
+    }
     for (const handle of this.#generatedHandles) {
       handle.remove();
     }
     this.#handles = [];
     this.#generatedHandles = [];
+    this.#stopResize();
   }
 
   #prepareHandles() {
@@ -281,7 +337,7 @@ class Resizable {
   }
 
   #startResize(event, direction) {
-    if ((event.type === 'mousedown') && (event.button !== 0)) {
+    if (this.#destroyed || ((event.type === 'mousedown') && (event.button !== 0))) {
       return;
     }
 
@@ -307,16 +363,16 @@ class Resizable {
     this.#previousBodyCursor = document.body.style.cursor;
     document.body.style.cursor = DIRECTION_CURSORS[direction] || 'default';
 
-    if (typeof this.#options.onResizeStart === 'function') {
-      this.#options.onResizeStart(this.#resizeState, event);
-    }
-
     window.addEventListener('mousemove', this.#onPointerMove);
     window.addEventListener('mouseup', this.#stopResize);
     window.addEventListener('touchmove', this.#onPointerMove, {
       passive: false,
     });
     window.addEventListener('touchend', this.#stopResize);
+
+    if (typeof this.#options.onResizeStart === 'function') {
+      this.#options.onResizeStart(this.#resizeState, event);
+    }
   }
 
   #onPointerMove = (event) => {
