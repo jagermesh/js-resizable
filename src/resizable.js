@@ -250,8 +250,31 @@ class Resizable {
     };
   }
 
+  // If the element was moved with CSS transform (e.g. js-draggable default),
+  // bake that offset into left/top so resize left/top writes do not stack on top
+  // of translate and jump the box.
+  #bakeTransformIntoPosition() {
+    const ctrl = this.#ctrl;
+    const transform = window.getComputedStyle(ctrl).transform;
+    if (!transform || (transform === 'none')) {
+      return;
+    }
+
+    const rect = ctrl.getBoundingClientRect();
+    ctrl.style.transform = 'none';
+    ctrl.style.position = 'fixed';
+    ctrl.style.left = `${rect.left}px`;
+    ctrl.style.top = `${rect.top}px`;
+    ctrl.style.right = '';
+    ctrl.style.bottom = '';
+    ctrl.style.marginTop = '0px';
+    ctrl.style.marginLeft = '0px';
+  }
+
   #ensureFixedPosition() {
     const ctrl = this.#ctrl;
+
+    this.#bakeTransformIntoPosition();
 
     if ((ctrl.style.position === 'fixed') && ctrl.style.left && ctrl.style.top) {
       return;
